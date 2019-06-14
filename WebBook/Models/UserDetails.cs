@@ -5,6 +5,7 @@ namespace WebBook.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using WebBook.Validators;
 
     public partial class UserDetails
     {
@@ -32,6 +33,7 @@ namespace WebBook.Models
 
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
+        [BirthdayDate]
         public DateTime Birthday { get; set; }
     }
 }
