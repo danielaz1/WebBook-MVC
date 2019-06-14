@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebBook.Models.UserDetails>
+﻿@model IEnumerable<WebBook.Models.FriendsView>
 
 @{
     ViewBag.Title = "Index";
@@ -6,53 +6,61 @@
 }
 
 <h2>Index</h2>
+@Html.Raw(TempData["msg"])
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.friend.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Surname)
+            @Html.DisplayNameFor(model => model.friend.Surname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Country)
+            @Html.DisplayNameFor(model => model.friend.Country)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayNameFor(model => model.friend.City)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Birthday)
+            @Html.DisplayNameFor(model => model.friend.Birthday)
         </th>
-        <th></th>
+        <th>Add to Friends</th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Surname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Birthday)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.friend.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.friend.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.friend.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.friend.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.friend.Birthday)
+            </td>
+
+            <td>
+                @if (!item.friends)
+                {
+                    @Html.ActionLink("Add +", "AddFriend", new { id = item.friend.OwnerID }, new { @class = "btn btn-default" })
+
+                }
+                else
+                {
+                    @Html.ActionLink("Remove -", "RemoveFriend", new { id = item.friend.OwnerID }, new { @class = "btn btn-danger" })
+
+                }
+            </td>
+        </tr>
+    }
 
 </table>

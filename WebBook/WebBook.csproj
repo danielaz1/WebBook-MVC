@@ -173,17 +173,15 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserDetailsController.cs" />
+    <Compile Include="Controllers\AppUserManagerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AspNetRoles.cs" />
-    <Compile Include="Models\AspNetUserLogins.cs" />
-    <Compile Include="Models\AspNetUserRoles.cs" />
-    <Compile Include="Models\AspNetUsers.cs" />
+    <Compile Include="Models\Friends.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\UserManagerModel.cs" />
+    <Compile Include="Models\AppUserManagerModel.cs" />
     <Compile Include="Models\UserDetailsModel.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\Post.cs" />
@@ -252,6 +250,15 @@
     <Content Include="Views\UserDetails\Details.cshtml" />
     <Content Include="Views\UserDetails\Edit.cshtml" />
     <Content Include="Views\UserDetails\Index.cshtml" />
+    <Content Include="Views\AppUserManager\Create.cshtml" />
+    <Content Include="Views\AppUserManager\Delete.cshtml" />
+    <Content Include="Views\AppUserManager\Details.cshtml" />
+    <Content Include="Views\AppUserManager\Edit.cshtml" />
+    <Content Include="Views\AppUserManager\Index.cshtml" />
+    <Content Include="Views\UserDetails\AddFriend.cshtml" />
+    <Content Include="Views\UserDetails\RemoveFriend.cshtml" />
+    <Content Include="Views\UserDetails\MyFriends.cshtml" />
+    <Content Include="Views\UserDetails\MyFriendsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

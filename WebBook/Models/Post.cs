@@ -11,11 +11,9 @@ namespace WebBook.Models
     {
         public string Id { get; set; }
 
-        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
         [Required]
-        [Display(Name = "Content")]
         public string Content { get; set; }
     }
 }

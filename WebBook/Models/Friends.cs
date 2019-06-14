@@ -6,20 +6,14 @@ namespace WebBook.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class AspNetUserLogins
+    public partial class Friends
     {
         [Key]
         [Column(Order = 0)]
-        public string LoginProvider { get; set; }
+        public string User1Id { get; set; }
 
         [Key]
         [Column(Order = 1)]
-        public string ProviderKey { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public string UserId { get; set; }
-
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public string User2Id { get; set; }
     }
 }

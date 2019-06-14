@@ -14,11 +14,119 @@ namespace WebBook.Controllers
     public class UserDetailsController : Controller
     {
         private UserDetailsModel db = new UserDetailsModel();
+        private AppUserManagerModel appDB = new AppUserManagerModel();
+
 
         // GET: UserDetails
-        public ActionResult Index()
+        public ActionResult Index(string msg)
         {
-            return View(db.UserDetails.ToList());
+            string myId = User.Identity.GetUserId();
+            List<FriendsView> model = new List<FriendsView>();
+            foreach(var user in db.UserDetails.ToList())
+            {
+                FriendsView friend = new FriendsView();
+                friend.friend = user;
+                if(db.Friends.Any(x=>x.User1Id==user.Id && x.User2Id==myId) || db.Friends.Any(x => x.User1Id ==myId && x.User2Id == user.Id))
+                {
+                    friend.friends = true;
+                }
+                model.Add(friend);
+            }
+
+            if(!String.IsNullOrEmpty(msg))
+            {
+                TempData["msg"] = "<script>alert('"+msg+"');</script>";
+            }
+
+            return View(model.Where(x=>x.friend.OwnerID!=myId));
+        }
+        public ActionResult AddFriend(string id)
+        {
+            ViewBag.Id = id;
+            ViewBag.Id2 = User.Identity.GetUserId();
+            ViewBag.name = db.UserDetails.FirstOrDefault(x => x.Id == id).Name;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddFriend(string id,string id2)
+        {
+            string name = db.UserDetails.FirstOrDefault(x => x.Id == id).Name;
+            Friends friend = new Friends();
+            friend.User1Id = id;
+            friend.User2Id = User.Identity.GetUserId();
+            db.Friends.Add(friend);
+            db.SaveChanges();
+            return RedirectToAction("Index", new { msg = "Pomyslnie dodano " + name + " do znajomych" }); 
+        }
+
+        public ActionResult RemoveFriend(string id)
+        {
+            ViewBag.Id = id;
+            ViewBag.Id2 = User.Identity.GetUserId();
+            ViewBag.name = db.UserDetails.FirstOrDefault(x => x.Id == id).Name;
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public ActionResult RemoveFriend(string id, string id2)
+        {
+            string name = db.UserDetails.FirstOrDefault(x => x.Id == id).Name;
+            Friends friend = new Friends();
+            if (db.Friends.Any(x => x.User1Id == id && x.User2Id == id2))
+            {
+                friend = db.Friends.FirstOrDefault(x => x.User1Id == id && x.User2Id == id2);
+            }
+            else if(db.Friends.Any(x => x.User1Id == id2 && x.User2Id == id))
+            {
+                friend = db.Friends.FirstOrDefault(x => x.User1Id == id2 && x.User2Id == id);
+            }
+            if(friend!=null)
+            {
+                db.Friends.Remove(friend);
+                db.SaveChanges();
+            }
+           
+            return RedirectToAction("Index", new { msg = "Pomyslnie usunięto " + name + " ze znajomych" });
+        }
+
+
+        public ActionResult MyFriends(string id)
+        {
+            if(id == null)
+            {
+                id = User.Identity.GetUserId();
+            }
+
+            List<UserDetails> friends = new List<UserDetails>();
+            foreach(var friends1 in db.Friends.Where(x=>x.User1Id==id))
+            {
+                friends.Add(db.UserDetails.FirstOrDefault(x => x.Id == friends1.User2Id));
+            }
+            foreach (var friends2 in db.Friends.Where(x => x.User2Id == id))
+            {
+                friends.Add(db.UserDetails.FirstOrDefault(x => x.Id == friends2.User1Id));
+            }
+            return View(friends.Distinct());
+        }
+
+        public ActionResult MyFriendsPartial() { 
+        
+            string id = User.Identity.GetUserId();
+        
+
+        List<UserDetails> friends = new List<UserDetails>();
+            foreach(var friends1 in db.Friends.Where(x=>x.User1Id==id))
+            {
+                friends.Add(db.UserDetails.FirstOrDefault(x => x.Id == friends1.User2Id));
+            }
+            foreach (var friends2 in db.Friends.Where(x => x.User2Id == id))
+            {
+                friends.Add(db.UserDetails.FirstOrDefault(x => x.Id == friends2.User1Id));
+            }
+            return PartialView(friends);
         }
 
         // GET: UserDetails/Details/5
